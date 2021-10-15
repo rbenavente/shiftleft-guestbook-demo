@@ -21,7 +21,7 @@ node {
                     clusterName: '',
                     namespace: ''
                     ]) {
-            sh "kubectl create namespace ${env.ns} --dry-run=client -o yaml | kubectl apply -f -  && \
+            sh "kubectl create namespace ${env.ns} --dry-run -o yaml | kubectl apply -f -  && \
             kubectl apply -f redis-leader-deployment.yaml -n ${env.ns} && \
             kubectl apply -f redis-leader-service.yaml -n ${env.ns} && \
             kubectl apply -f redis-follower-deployment.yaml -n ${env.ns} && \
