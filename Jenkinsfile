@@ -41,8 +41,8 @@ node {
         sh 'curl -o apoctl https://download.aporeto.com/apoctl/linux/apoctl'
         sh 'chmod +x apoctl'
         withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {
-            sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -f guestbook-ruleset.yaml \
-                --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} --set ns=${env.ns}"
+            sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -f guestbook-ruleset.yaml 
+             //   --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} --set ns=${env.ns}"
         }
     }
 
