@@ -33,7 +33,7 @@ node {
 
     stage('Get Microsegmentation Creds') {
         withCredentials([file(credentialsId: 'pipeline.creds', variable: 'APOCTL_CREDS')]) {
-            sh "cp \$mycreds $WORKSPACE/default.creds"
+            sh "cp \$APOCTL_CREDS $WORKSPACE/default.creds"
         }       
     }
 
