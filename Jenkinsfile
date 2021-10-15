@@ -1,5 +1,9 @@
 node {
-
+    
+    environment {
+        guestbook = "${env.ns}"
+    }
+    
     stage('Startup Process') {
         sh 'rm -f -r -d *'
         sh 'rm -f -r -d .[!.]* ..?*'
