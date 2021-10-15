@@ -10,7 +10,7 @@ node {
     }
 
     stage('Deploy Guestbook App') {
-        withKubeConfig([credentialsId: 'kubeconfig-cluster2',
+        withKubeConfig([credentialsId: 'k8s_config',
                     caCertificate: '',
                     serverUrl: '',
                     contextName: '',
@@ -28,7 +28,7 @@ node {
     }
 
     stage('Get Microsegmentation Creds') {
-        withCredentials([file(credentialsId: 'aporeto-creds', variable: 'mycreds')]) {
+        withCredentials([file(credentialsId: 'pipeline.creds', variable: 'APOCTL_CREDS')]) {
             sh "cp \$mycreds $WORKSPACE/default.creds"
         }       
     }
