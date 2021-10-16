@@ -45,7 +45,10 @@ node {
                 --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} --set ns=${env.ns}"
         }
     }
-
+   stage('Generate traffic') {
+        sh('chmod +x ./traffic-gen.sh && ./traffic-gen.sh')
+    }
+    
     stage('Finish Process') {
         sh 'rm -f -r -d *'
         sh 'rm -f -r -d .[!.]* ..?*'
