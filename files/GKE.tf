@@ -15,6 +15,7 @@ resource "google_container_cluster" "workload_cluster" {
   network                  = google_compute_network.vpc.name
   subnetwork               = google_compute_subnetwork.public-subnetwork.name
   master_authorized_networks_config {
+    
     cidr_blocks {
       cidr_block = "0.0.0.0/0"
     }
@@ -26,7 +27,6 @@ resource google_container_node_pool "custom_node_pool" {
   location = var.region
 
   node_config {
-
     image_type = "Ubuntu"
   }
 }
