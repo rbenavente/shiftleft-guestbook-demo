@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: php-redis
-        image:  gcr.io/google_samples/gb-frontend:v5  ## gcr.io/google_samples/gb-frontend:v5
+        command: ['./var/entrypoint.sh'] ## gen traffic
+        image:  rbenavente/gb-frontend-cns:latest  ## gcr.io/google_samples/gb-frontend:v5
         env:
         - name: GET_HOSTS_FROM
           value: "dns"
