@@ -29,6 +29,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 RUN ./entrypoint.sh
 
-
+CMD ["apache2-foreground"]
  
 # ENTRYPOINT ["entrypoint.sh"]
