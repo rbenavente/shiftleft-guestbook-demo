@@ -57,7 +57,7 @@ node {
 	
 
 	
-  stage('Scan TF to Deploy GKE' ) { 
+  stage('Scan TF to Deploy GKE and k8s manifest' ) { 
     withDockerContainer(args: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock', image: 'kennethreitz/pipenv:latest') {              
                 //  sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo"
    sh "pipenv install"
@@ -67,13 +67,7 @@ node {
             
         }
    }
-  stage('Scan k8s manifest') {
-  withDockerContainer(image: 'bridgecrew/jenkins_bridgecrew_runner:latest') {              
-                  sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo"
-               
-            
-        }
-}	
+	
     stage('Deploy Guestbook App') {
     withKubeConfig([credentialsId: 'k8s_config',
                     caCertificate: '',
