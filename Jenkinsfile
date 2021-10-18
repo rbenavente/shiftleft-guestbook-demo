@@ -14,19 +14,19 @@ node {
         checkout scm
     }
 	
-	    stage('Build image') {
-        //This builds the actual image; synonymous to docker build on the command line
-        app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
-        echo app.id
-    }
+// 	    stage('Build image') {
+//         //This builds the actual image; synonymous to docker build on the command line
+//         app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
+//         echo app.id
+//     }
 
-    stage('Scan Image for Vul and Malware') {
-        try {
-            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
-        } finally {
-            prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
-        }
-    }
+//     stage('Scan Image for Vul and Malware') {
+//         try {
+//             prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
+//         } finally {
+//             prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
+//         }
+//     }
 
 //    stage('Scan image with twistcli') {
 //        withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
@@ -36,21 +36,21 @@ node {
 //        }
 //    }
 
-    stage('Push image to the registry') {
+//     stage('Push image to the registry') {
         //Finally, we'll push the image with two tags. 1st, the incremental build number from Jenkins, then 2nd, the 'latest' tag.
         try {
-            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
-                app.push("${env.BUILD_NUMBER}")
-                app.push("latest")
-            }
-        }catch(error) {
-            echo "1st push failed, retrying"
-            retry(5) {
-                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
-                }
-            }
+//             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
+//                 app.push("${env.BUILD_NUMBER}")
+//                 app.push("latest")
+//             }
+//         }catch(error) {
+//             echo "1st push failed, retrying"
+//             retry(5) {
+//                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
+//                     app.push("${env.BUILD_NUMBER}")
+//                     app.push("latest")
+//                 }
+//             }
         }
     }
 	
