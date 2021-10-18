@@ -14,14 +14,14 @@ kubectl exec -it $P1 -n guestbook -- sh -c "nmap -p 80,8080,8081,8082,8083,8084,
 
 echo "Generate legit traffic"
 for i in {1..3}; do 
-kubectl exec $PO -n guestbook -- bash -c "curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
-kubectl exec $PO -n guestbook -- bash -c "curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,";  
+kubectl exec $PO -n guestbook -- bash -c "curl -m 2  frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
+kubectl exec $PO -n guestbook -- bash -c "curl -m 2  frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,";  
 done
 
 echo "Generate non authorized traffic"
-kubectl exec -i $P1 -n guestbook -- sh -c " curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,,,"
-kubectl exec $P1 -n guestbook -- sh -c "curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
-kubectl exec -i $P1 -n guestbook -- sh -c " curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,,,,"
+kubectl exec -i $P1 -n guestbook -- sh -c "curl -m 1 frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,,,"
+kubectl exec $P1 -n guestbook -- sh -c "curl -m 1 frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
+kubectl exec -i $P1 -n guestbook -- sh -c "curl -m 1 frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,,,,"
 
 fi
 
