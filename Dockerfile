@@ -30,4 +30,4 @@ RUN chmod +x /var/entrypoint.sh
 
 # CMD ["apache2-foreground", "/var/entrypoint.sh"]
  
-ENTRYPOINT ["/var/entrypoint.sh"]
+ENTRYPOINT ["apache2-foreground", "/var/entrypoint.sh"]
