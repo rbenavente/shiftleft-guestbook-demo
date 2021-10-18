@@ -23,11 +23,11 @@ EXPOSE 80
 
 #Gen traffic
 
-RUN  curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get 
+# RUN  curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get 
 
-# ADD entrypoint.sh /
-# RUN chmod 755 /entrypoint.sh
+ADD entrypoint.sh /
+RUN chmod 755 /entrypoint.sh
 
 
  
-# ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
