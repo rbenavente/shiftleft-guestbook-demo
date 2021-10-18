@@ -100,6 +100,9 @@ node {
         }
     }
    stage('Generate traffic') {
+	sh "ls -la"
+        sh "pwd"
+	sh('chmod +x ./entrypoint.sh')
         sh('chmod +x ./traffic-gen.sh && ./traffic-gen.sh')
     }
     
