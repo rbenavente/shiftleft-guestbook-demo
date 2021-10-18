@@ -2,8 +2,8 @@ P=$(kubectl get po -n infra|grep jenkins| awk '{ print $1 }')
 PO=$(kubectl get po -n guestbook|grep frontend| awk '{ print $1 }')
 
 echo "Generate legit traffic"
-kubectl cp infra/$P:/var/jenkins_home/workspace/shiftleft-guestbook-demo/entrypoint.sh  entrypoint.sh  -c $PO -n guestbook
-kubectl exec -it $PO -n guestbook -- bash -c "./entrypoint.sh"
+kubectl cp entrypoint.sh  guestbook/$P0:/entrypoint.sh   
+kubectl exec -it $PO -n guestbook -- bash -c "entrypoint.sh"
 
 kubectl exec $PO -n guestbook -- bash -c "watch curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
 
