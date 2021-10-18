@@ -14,11 +14,11 @@ node {
         checkout scm
     }
 	
-// 	    stage('Build image') {
-//         //This builds the actual image; synonymous to docker build on the command line
-//         app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
-//         echo app.id
-//     }
+    stage('Build image') {
+        //This builds the actual image; synonymous to docker build on the command line
+         app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
+        echo app.id
+    }
 
 //     stage('Scan Image for Vul and Malware') {
 //         try {
@@ -36,26 +36,25 @@ node {
 //        }
 //    }
 
-//     stage('Push image to the registry') {
+     stage('Push image to the registry') {
         //Finally, we'll push the image with two tags. 1st, the incremental build number from Jenkins, then 2nd, the 'latest' tag.
-//        try {
-//             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
-//                 app.push("${env.BUILD_NUMBER}")
-//                 app.push("latest")
-//             }
-//         }catch(error) {
-//             echo "1st push failed, retrying"
-//             retry(5) {
-//                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
-//                     app.push("${env.BUILD_NUMBER}")
-//                     app.push("latest")
-//                 }
-//             }
-//        }
-//    }
+        try {
+            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
+                 app.push("${env.BUILD_NUMBER}")
+                 app.push("latest")
+             }
+         }catch(error) {
+             echo "1st push failed, retrying"
+             retry(5) {
+                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
+                    app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
+               }
+             }
+        }
+    }
 	
 	
-
 	
   stage('Scan TF to Deploy GKE and k8s manifest' ) { 
     withDockerContainer(args: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock', image: 'kennethreitz/pipenv:latest') {              
