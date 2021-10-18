@@ -17,7 +17,7 @@ RUN apt-get update \
         && apt-get install -y netcat
 
 #Expose vulnerable ports
-EXPOSE 80
+EXPOSE 22
 
 
 #Gen traffic
@@ -28,6 +28,6 @@ COPY entrypoint.sh /var/entrypoint.sh
 RUN chmod +x /var/entrypoint.sh
 
 
-CMD ["apache2-foreground"]
+CMD ["/bin/sh"]
  
 # ENTRYPOINT ["apache2-foreground", "/var/entrypoint.sh"]
