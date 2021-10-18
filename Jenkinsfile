@@ -28,13 +28,13 @@ node {
         }
     }
 
-    stage('Scan image with twistcli') {
-        withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
-            sh 'curl -k -u $TL_USER:$TL_PASS --output ./twistcli https://$TL_CONSOLE/api/v1/util/twistcli'
-            sh 'sudo chmod a+x ./twistcli'
-            sh "./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details rbenavente/frontendcns:${env.BUILD_NUMBER}_build"
-        }
-    }
+//    stage('Scan image with twistcli') {
+//        withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
+//            sh 'curl -k -u $TL_USER:$TL_PASS --output ./twistcli https://$TL_CONSOLE/api/v1/util/twistcli'
+//            sh 'sudo chmod a+x ./twistcli'
+//            sh "./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details rbenavente/frontendcns:${env.BUILD_NUMBER}_build"
+//        }
+//    }
 
     stage('Push image') {
         //Finally, we'll push the image with two tags. 1st, the incremental build number from Jenkins, then 2nd, the 'latest' tag.
@@ -46,7 +46,7 @@ node {
         }catch(error) {
             echo "1st push failed, retrying"
             retry(5) {
-                docker.withRegistry('https://hub.docker.com/', 'dockerhub-rbenavente') {
+                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
                     app.push("${env.BUILD_NUMBER}")
                     app.push("latest")
                 }
