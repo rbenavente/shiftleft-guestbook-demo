@@ -14,7 +14,7 @@ node {
     }
   stage('Scan IaC: GKE TF and k8s manifest  with Bridgecrew/checkov') {
   withDockerContainer(image: 'bridgecrew/jenkins_bridgecrew_runner:latest') {              
-                  sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo"
+                  sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo/gke-vuln.tf"
                
             
         }
