@@ -1,4 +1,4 @@
-sleep 120
+
 echo "deploy attacker"
 
 kubectl run attacker  --image=rbenavente/evilpetclinic -n guestbook
