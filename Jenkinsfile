@@ -57,8 +57,8 @@ node {
 	
 
 	
-  stage('Scan TF to Deploy GKE ) {
-  withDockerContainer(args: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock', image: 'kennethreitz/pipenv:latest') {              
+  stage('Scan TF to Deploy GKE ) { 
+    withDockerContainer(args: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock', image: 'kennethreitz/pipenv:latest') {              
                 //  sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo"
    sh "pipenv install"
    sh "pipenv run pip install bridgecrew"
