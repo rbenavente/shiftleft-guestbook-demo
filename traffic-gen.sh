@@ -1,11 +1,11 @@
 
 PO=$(kubectl get po -n guestbook|grep frontend| awk '{ print $1 }')
 
- echo "Generate legit traffic"
+echo "Generate legit traffic"
 kubectl cp ./entrypoint.sh  entrypoint.sh  $PO -n guestbook
 kubectl exec -it $PO -n guestbook -- bash -c "./entrypoint.sh"
 
-kubectl exec -it $PO -n guestbook -- bash -c "watch curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
+//kubectl exec -it $PO -n guestbook -- bash -c "watch curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
 
 
 
@@ -20,7 +20,7 @@ kubectl exec -it $P1 -n guestbook -- sh -c "nmap -p 80,8080,8081,8082,8083,8084,
 echo "gen non authorized traffic"
 kubectl exec -it $P1 -n guestbook -- sh -c " curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,"
 kubectl cp ./entrypoint.sh  entrypoint.sh  $P1 -n guestbook
-kubectl exec -it $P1 -n guestbook -- sh -c "watch curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
+// kubectl exec -it $P1 -n guestbook -- sh -c "watch curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
 
 command || true
 
