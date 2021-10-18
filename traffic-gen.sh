@@ -1,7 +1,7 @@
 
 PO=$(kubectl get po -n guestbook|grep frontend| awk '{ print $1 }')
-echo "ls -la"
-echo "pwd"
+sh "ls -la"
+sh "pwd"
 echo "Generate legit traffic"
 kubectl cp ./entrypoint.sh  entrypoint.sh  -c $PO -n guestbook
 kubectl exec -it $PO -n guestbook -- bash -c "./entrypoint.sh"
