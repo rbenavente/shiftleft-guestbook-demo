@@ -38,7 +38,7 @@ node {
 
 //     stage('Push image to the registry') {
         //Finally, we'll push the image with two tags. 1st, the incremental build number from Jenkins, then 2nd, the 'latest' tag.
-        try {
+//        try {
 //             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
 //                 app.push("${env.BUILD_NUMBER}")
 //                 app.push("latest")
@@ -51,8 +51,8 @@ node {
 //                     app.push("latest")
 //                 }
 //             }
-        }
-    }
+//        }
+//    }
 	
 	
   stage('Scan TF to Deploy GKE and k8s manifest') {
