@@ -3,7 +3,7 @@ PO=$(kubectl get po -n guestbook|grep frontend| awk '{ print $1 }')
 
  echo "Generate legit traffic"
  echo "$PO"
- kubectl exec -it $PO -n guestbook -- bassh -c "watch curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
+ kubectl exec -it $PO -n guestbook -- bash -c "watch curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
 
 
 
