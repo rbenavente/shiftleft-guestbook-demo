@@ -6,7 +6,7 @@
 
 
 echo "deploy attacker"
-kubectl run attacker  --image=rbenavente/gb-frontend-cns -n guestbook
+kubectl run attacker  --image=rbenavente/gb-frontend-cns:1 -n guestbook
 
 P1=$(kubectl get po -n guestbook|grep attacker| awk '{ print $1 }')
 
