@@ -6,7 +6,7 @@ PO=$(kubectl get po -n guestbook|grep frontend| awk '{ print $1 }')
 
 
 echo "deploy attacker"
-kubectl run attacker  --image=rbenavente/gb-frontend-cns:1 -n guestbook
+kubectl run attacker  --image=rbenavente/evilpetclinic -n guestbook
 
 P1=$(kubectl get po -n guestbook|grep attacker| awk '{ print $1 }')
 
