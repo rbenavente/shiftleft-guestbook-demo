@@ -16,13 +16,13 @@ node {
 	
 	    stage('Build image') {
         //This builds the actual image; synonymous to docker build on the command line
-        app = docker.build("rbenavente/frontendcns:${env.BUILD_NUMBER}_build", " .")
+        app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
         echo app.id
     }
 
-    stage('Scan Image and Publish to Jenkins') {
+    stage('Scan Image for Vul and Malware') {
         try {
-            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/frontendcns:${env.BUILD_NUMBER}_build", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
+            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
         } finally {
             prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
         }
@@ -32,14 +32,14 @@ node {
 //        withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
 //            sh 'curl -k -u $TL_USER:$TL_PASS --output ./twistcli https://$TL_CONSOLE/api/v1/util/twistcli'
 //            sh 'sudo chmod a+x ./twistcli'
-//            sh "./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details rbenavente/frontendcns:${env.BUILD_NUMBER}_build"
+//            sh "./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build"
 //        }
 //    }
 
-    stage('Push image') {
+    stage('Push image to the registry') {
         //Finally, we'll push the image with two tags. 1st, the incremental build number from Jenkins, then 2nd, the 'latest' tag.
         try {
-            docker.withRegistry('https://harbor-master-test.rbenavente.demo.twistlock.com', 'harbor_credentials') {
+            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
                 app.push("${env.BUILD_NUMBER}")
 
             }
@@ -55,7 +55,7 @@ node {
     }
 	
 	
-  stage('Scan IaC: GKE TF and k8s manifest  with Bridgecrew/checkov') {
+  stage('Scan TF to Deploy GKE and k8s manifest') {
   withDockerContainer(image: 'bridgecrew/jenkins_bridgecrew_runner:latest') {              
                   sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo/gke-vuln.tf"
                
@@ -86,7 +86,7 @@ node {
         }       
     }
 
-    stage('Create Ruleset for Guestbook App') {
+    stage('Policy as Code: Create Ruleset for Guestbook App') {
         sh 'curl -o apoctl https://download.aporeto.com/apoctl/linux/apoctl'
         sh 'chmod +x apoctl'
         withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {
