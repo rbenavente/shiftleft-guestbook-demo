@@ -68,7 +68,7 @@ node {
                 //  sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo"
    sh "pipenv install"
    sh "pipenv run pip install bridgecrew"
-   sh "pipenv run bridgecrew --directory .  --bc-api-key cadc031b-f0a7-5fe1-9085-e0801fc52131 --repo-id rbenavente/shiftleft-guestbook-demo -o junitxml > result.xml || true"
+   sh "pipenv run bridgecrew --directory ./files  --bc-api-key cadc031b-f0a7-5fe1-9085-e0801fc52131 --repo-id rbenavente/shiftleft-guestbook-demo -o junitxml > result.xml || true"
    junit "result.xml"  
             
         }
