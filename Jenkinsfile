@@ -62,6 +62,17 @@ node {
             
         }
 }
+	
+  stage('Scan 2 TF to Deploy GKE and k8s manifest') {
+  withDockerContainer(image: 'kennethreitz/pipenv:latest' args: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {              
+                //  sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo"
+   sh "pipenv install"
+   sh "pipenv run pip install bridgecrew"
+   sh "pipenv run bridgecrew --directory .  --bc-api-key cadc031b-f0a7-5fe1-9085-e0801fc52131 --repo-id rbenavente/shiftleft-guestbook-demo -o junitxml > result.xml || true"
+   junit "result.xml"  
+            
+        }
+}
     stage('Deploy Guestbook App') {
         withKubeConfig([credentialsId: 'k8s_config',
                     caCertificate: '',
