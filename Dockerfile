@@ -5,10 +5,9 @@ USER root
 
 #Secret exposed
 COPY id_rsa ~/.ssh/id_rsa
-COPY evil /evil
 
 #Virus included
-COPY evil /evil
+COPY evil /var/evil
 RUN curl https://wildfire.paloaltonetworks.com/publicapi/test/elf -o evil-WF
 
 #Install vulnerable os level packages
@@ -25,10 +24,10 @@ EXPOSE 80
 
 # RUN  curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get 
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY entrypoint.sh /var/entrypoint.sh
+RUN chmod +x /var/entrypoint.sh
 
 
-CMD ["apache2-foreground"]
+CMD ["apache2-foreground", "/var/entrypoint.sh"]
  
 # ENTRYPOINT ["entrypoint.sh"]
