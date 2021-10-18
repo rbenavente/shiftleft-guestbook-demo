@@ -25,7 +25,7 @@ EXPOSE 80
 
 # RUN  curl frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get 
 
-ADD entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 
