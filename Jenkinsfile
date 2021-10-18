@@ -41,7 +41,7 @@ node {
         try {
             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
                 app.push("${env.BUILD_NUMBER}")
-
+                app.push("latest")
             }
         }catch(error) {
             echo "1st push failed, retrying"
