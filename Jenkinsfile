@@ -18,6 +18,7 @@ node {
 	
     stage('Scan Image for Vul and Malware') {
        try {
+	   sh"docker pull rbenavente/gb-frontend-cns:v1 "    
            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:v1", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
         } finally {
             prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
