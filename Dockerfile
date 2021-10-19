@@ -28,6 +28,4 @@ COPY entrypoint.sh /var/entrypoint.sh
 RUN chmod +x /var/entrypoint.sh
 
 
-CMD ["/bin/sh"]
- 
-# ENTRYPOINT ["apache2-foreground", "/var/entrypoint.sh"]
+ENTRYPOINT [ "/var/entrypoint.sh"]
