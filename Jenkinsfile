@@ -14,21 +14,22 @@ node {
         checkout scm
     }
 	
-//     stage('Build image') {
+    stage('Build image') {
          //This builds the actual image; synonymous to docker build on the command line
-//          app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
-//         echo app.id
-//     }
+         app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
+        echo app.id
+     }
 
-//     stage('Scan Image for Vul and Malware') {
-//         try {
-//             prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
-//         } finally {
-//             prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
-//         }
-//     }
+     stage('Scan Image for Vul and Malware') {
+        try {
+            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
+        } finally {
+            prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
+        }
+    }
 
-//    stage('Scan image with twistcli') {
+// Optionally you can scan images with twistcli if jenkins plugin is not available. 	
+//   stage('Scan image with twistcli') {
 //        withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
 //            sh 'curl -k -u $TL_USER:$TL_PASS --output ./twistcli https://$TL_CONSOLE/api/v1/util/twistcli'
 //            sh 'sudo chmod a+x ./twistcli'
@@ -36,36 +37,36 @@ node {
 //        }
 //    }
 
-//      stage('Push image to the registry') {
+      stage('Push image to the registry') {
         //Finally, we'll push the image with two tags. 1st, the incremental build number from Jenkins, then 2nd, the 'latest' tag.
-//         try {
-//             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
-//                  app.push("${env.BUILD_NUMBER}")
-//                  app.push("latest")
-//              }
-//          }catch(error) {
-//              echo "1st push failed, retrying"
-//              retry(5) {
-//                  docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
-//                     app.push("${env.BUILD_NUMBER}")
-//                     app.push("latest")
-//                }
-//              }
-//         }
-//     }
+         try {
+             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
+                  app.push("${env.BUILD_NUMBER}")
+                 app.push("latest")
+             }
+         }catch(error) {
+             echo "1st push failed, retrying"
+              retry(5) {
+                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
+                     app.push("${env.BUILD_NUMBER}")
+                     app.push("latest")
+               }
+            }
+       }
+     }
 	
 	
 	
-//     stage('Scan TF to Deploy GKE and k8s manifest' ) { 
-//      withDockerContainer(args: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock', image: 'kennethreitz/pipenv:latest') {              
+     stage('Scan TF to Deploy GKE and k8s manifest' ) { 
+      withDockerContainer(args: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock', image: 'kennethreitz/pipenv:latest') {              
                 //  sh "/run.sh cadc031b-f0a7-5fe1-9085-e0801fc52131 https://github.com/rbenavente/shiftleft-guestbook-demo"
-//      sh "pipenv install"
-//       sh "pipenv run pip install bridgecrew"
-//       sh "pipenv run bridgecrew --directory ./files  --bc-api-key ${env.token} --repo-id rbenavente/shiftleft-guestbook-demo -o junitxml > result.xml || true"
-//       junit "result.xml"  
+       sh "pipenv install"
+       sh "pipenv run pip install bridgecrew"
+       sh "pipenv run bridgecrew --directory ./files  --bc-api-key ${env.token} --repo-id rbenavente/shiftleft-guestbook-demo -o junitxml > result.xml || true"
+       junit "result.xml"  
             
- //          }
- //   }
+         }
+   }
 	
     stage('Deploy Guestbook App') {
     withKubeConfig([credentialsId: 'k8s_config',
