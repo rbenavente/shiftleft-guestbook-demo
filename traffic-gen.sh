@@ -17,7 +17,7 @@ echo "Generate legit traffic"
 kubectl exec $PO -n guestbook -- bash  -c "apache2-foreground"
 
 // For default images frm grc.io registry 
-# for i in {1..5}; 
+# for i in {1..5}; do
 # kubectl exec $PO -n guestbook -- bash -c "curl -m 2  frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
 # kubectl exec $PO -n guestbook -- bash -c "curl -m 2  frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,";  
 # done
