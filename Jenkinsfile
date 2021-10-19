@@ -13,20 +13,32 @@ node {
     stage('cloneRepository') {
         checkout scm
     }
-	
-    stage('Build image') {
-         //This builds the actual image; synonymous to docker build on the command line
-         app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
-        echo app.id
-     }
 
-     stage('Scan Image for Vul and Malware') {
-        try {
-            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
+// Option1: Simulate the image scanning before publish to the registry 	
+	
+    stage('Scan Image for Vul and Malware') {
+       try {
+           prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:v1", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
         } finally {
             prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
-        }
+      }
     }
+	
+//  Option2: Steps to create the image from scratch	
+	
+//    stage('Build image') {
+         //This builds the actual image; synonymous to docker build on the command line
+//         app = docker.build("rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", " .")
+//        echo app.id
+//     }
+
+//     stage('Scan Image for Vul and Malware') {
+//        try {
+//            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "rbenavente/gb-frontend-cns:${env.BUILD_NUMBER}_build", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
+//        } finally {
+//            prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
+//       }
+//    }
 
 // Optionally you can scan images with twistcli if jenkins plugin is not available. 	
 //   stage('Scan image with twistcli') {
@@ -37,23 +49,23 @@ node {
 //        }
 //    }
 
-      stage('Push image to the registry') {
+//      stage('Push image to the registry') {
         //Finally, we'll push the image with two tags. 1st, the incremental build number from Jenkins, then 2nd, the 'latest' tag.
-         try {
-             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
-                  app.push("${env.BUILD_NUMBER}")
-                 app.push("latest")
-             }
-         }catch(error) {
-             echo "1st push failed, retrying"
-              retry(5) {
-                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
-                     app.push("${env.BUILD_NUMBER}")
-                     app.push("latest")
-               }
-            }
-       }
-     }
+//         try {
+//             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
+//                  app.push("${env.BUILD_NUMBER}")
+//                 app.push("latest")
+//             }
+//         }catch(error) {
+//             echo "1st push failed, retrying"
+//              retry(5) {
+//                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-rbenavente') {
+//                     app.push("${env.BUILD_NUMBER}")
+//                     app.push("latest")
+//               }
+//            }
+//       }
+//     }
 	
 	
 	
