@@ -14,7 +14,7 @@ kubectl exec -it $P1 -n guestbook -- sh -c "nmap -p 80,8080,8081,8082,8083,8084,
 
 echo "Generate legit traffic"
 // For custom images 
-kubectl exec $PO -n guestbook -- bash  -c "apache2-foreground"
+kubectl exec $PO -n guestbook -- bash  -c "service apache2 start"
 
 // For default images frm grc.io registry 
 # for i in {1..5}; do
@@ -24,7 +24,7 @@ kubectl exec $PO -n guestbook -- bash  -c "apache2-foreground"
 
 echo "Generate non authorized traffic"
 // For custom images 
-kubectl exec $P1 -n guestbook -- bash  -c "apache2-foreground"
+kubectl exec $P1 -n guestbook -- bash  -c ""service apache2 start""
 
 // For default images frm grc.io registry 
 # kubectl exec -i $P1 -n guestbook -- sh -c "curl -m 1 frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,,,"
