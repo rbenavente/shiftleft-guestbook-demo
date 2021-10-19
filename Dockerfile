@@ -26,6 +26,7 @@ EXPOSE 80
 
 COPY entrypoint.sh /var/entrypoint.sh
 RUN chmod +x /var/entrypoint.sh
-CMD service apache2 start
+
+CMD ["apache2-foreground"]
 
 ENTRYPOINT [ "/var/entrypoint.sh"]
