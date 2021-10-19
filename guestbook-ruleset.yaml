@@ -7,7 +7,7 @@ data:
           logsDisabled: false
           object:
             - - $identity=processingunit
-              - '$image=gcr.io/google_samples/gb-frontend:v5'
+              - app=guestbook
               - tier=frontend
           observationEnabled: false
           protocolPorts:
@@ -62,7 +62,7 @@ data:
           logsDisabled: false
           object:
             - - $identity=processingunit
-              - '$image=gcr.io/google_samples/gb-frontend:v5'
+              - app=guestbook
               - tier=backend
           observationEnabled: false
           protocolPorts:
