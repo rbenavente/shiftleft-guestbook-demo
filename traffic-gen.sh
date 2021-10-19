@@ -7,12 +7,12 @@ PO=$(kubectl get po -n guestbook|grep frontend| awk '{ print $1 }')
 P1=$(kubectl get po -n guestbook|grep attacker| awk '{ print $1 }')
 
 if [[ $PO == *"No resources found"* ] or [ $P1 == *"No resources found"* ]]; then
-   sleep 120
+   sleep 180
 else
 
 
 echo "Generate legit traffic"
-// For custom images the entrypoint.sh automatically generate http request but we need to enable apache2 server on the container
+// For your own image xxxx/gb-guestbook-cns the entrypoint.sh automatically generate http request but we need to enable apache2 server on the container
 kubectl exec $PO -n guestbook -- bash  -c "service apache2 start"
 
 // For default images frm grc.io registry:
