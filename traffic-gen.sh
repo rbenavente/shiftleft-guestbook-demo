@@ -22,12 +22,12 @@ kubectl exec $PO -n guestbook -- bash  -c "service apache2 start"
 # done
 
 echo "Generate non authorized traffic"
-// For custom images: entrypoint.sh automatically generate http request
+// For the custom image user/gb-frontend-cns:v1: the entrypoint.sh automatically generate http request
 
 echo "scan ports"
 kubectl exec -it $P1 -n guestbook -- sh -c "nmap -p 80,8080,8081,8082,8083,8084,6379,2375,10250,6443,9998 frontend.guestbook.svc.cluster.local"
 
-// For default images frm grc.io registry 
+// For default images from grc.io registry gcr.io/google_samples/gb-frontend:v5: 
 # kubectl exec -i $P1 -n guestbook -- sh -c "curl -m 1 frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,,,"
 # kubectl exec $P1 -n guestbook -- sh -c "curl -m 1 frontend.guestbook.svc.cluster.local/guestbook.php?cmd=get"
 # kubectl exec -i $P1 -n guestbook -- sh -c "curl -m 1 frontend.guestbook.svc.cluster.local/guestbook.php?cmd=set&value=,,,,"
