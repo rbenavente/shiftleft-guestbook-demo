@@ -106,7 +106,7 @@ node {
     }
 
     stage('Policy as Code: Create Ruleset for Guestbook App') {
-        sh 'curl -o apoctl https://download.aporeto.com/apoctl/linux/apoctl'
+        sh 'curl -o apoctl https://download.aporeto.com/prismacloud/app/apoctl/linux/apoctl'
         sh 'chmod +x apoctl'
         withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {
             sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -f guestbook-ruleset.yaml \
