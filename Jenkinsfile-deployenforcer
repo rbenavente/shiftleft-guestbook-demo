@@ -1,0 +1,44 @@
+node {
+
+
+def TENANT='807152304871829504'    // Please modify with your tenand id value
+def CLOUD='cto-demo-rbc'          // Please modify with your cloud account value
+def GROUP='demo-build2'           //Please modify with your cluster name where you deployed the enforcer
+def APOCTL_API="https://api.east-02.network.prismacloud.io" // Please modify with Console API
+
+
+stage('Download apoctl') {
+sh "curl -o /usr/local/bin/apoctl https://download.aporeto.com/prismacloud/app/apoctl/linux/apoctl"
+sh "sudo chmod +x /usr/local/bin/apoctl"
+}
+
+stage('Check if the authorization works') {
+// Before this step you need to create the credencials file in the console at /TENANT/CLOUD namespace and import this file as a secret in Jenkins
+
+withCredentials([file(credentialsId: 'pipeline.creds', variable: 'APOCTL_CREDS')]){
+ sh "apoctl auth verify"
+}
+
+}
+stage('Create Namespace') {
+ withCredentials([file(credentialsId: 'pipeline.creds', variable: 'APOCTL_CREDS')]) {
+   withEnv (["TENANT=${TENANT}","CLOUD=${CLOUD}","GROUP=${GROUP}", "APOCTL_API=${APOCTL_API}"]) {
+    sh"apoctl api create namespace --namespace /$TENANT/$CLOUD -name=$GROUP"
+    }
+   }
+}
+stage('Deploy Enforcers') {
+withCredentials([file(credentialsId: 'pipeline.creds', variable: 'APOCTL_CREDS')]) {
+withEnv (["TENANT=${TENANT}","CLOUD=${CLOUD}","GROUP=${GROUP}", "APOCTL_API=${APOCTL_API}"]) {
+
+ // Deploying app and policies
+
+sh "apoctl enforcer install k8s --cluster-type custom --api https://api.east-02.network.prismacloud.io --namespace /$TENANT/$CLOUD/$GROUP --custom-cni-conf-dir /etc/cni/net.d --custom-cni-chained --output-dir ."
+//sh "kubectl create namespace aporeto"
+//sh "kubectl apply -f enforcerd.yaml"
+
+}
+}
+
+}
+}
