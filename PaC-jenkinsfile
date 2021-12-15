@@ -53,8 +53,9 @@ node {
                 --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group}"	
 
           // Once you configured the guestbook ruleset you can set to reject the default rule for In/Out traffic for app namespace
-            sh "./apoctl api update namespace 61b78d26ded81d0001cf8700 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
-            sh "./apoctl api update namespace 61b78d26ded81d0001cf8700 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
+	    PO=$(./apoctl api get namespace /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -c ID -o yaml |grep ID| awk '{ print $2 }')
+            sh "./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
+            sh "./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
             sh "./apoctl api update namespace 61b78d26ded81d0001cf8700 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} --data '{ "defaultPUIncomingTrafficAction": "Reject",   "defaultPUOutgoingTrafficAction": "Reject"}'"
 	    }
    }
