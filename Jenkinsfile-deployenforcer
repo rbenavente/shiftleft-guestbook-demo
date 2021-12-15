@@ -17,7 +17,7 @@ withCredentials([file(credentialsId: 'pipeline.creds', variable: 'APOCTL_CREDS')
 stage('Create Namespace') {
  withCredentials([file(credentialsId: 'pipeline.creds', variable: 'APOCTL_CREDS')]) {
    
-    sh"apoctl api create namespace --namespace /${env.tenant}/${env.cloudAccount} -name=${env.group}"
+    sh"apoctl api create namespace --namespace /${env.tenant}/${env.cloudAccount} -k 'name=${env.group}' "
     
    }
 }
