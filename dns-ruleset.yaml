@@ -1,6 +1,6 @@
 APIVersion: 0
 data:
- externalnetworks:
+  externalnetworks:
     - associatedTags:
         - 'externalnetwork:name=Kube DNS'
       entries:
@@ -16,11 +16,13 @@ data:
             - - 'externalnetwork:name=Kube DNS'
           observationEnabled: false
           protocolPorts:
-            - any
-      propagate: true
+            - tcp/53
+            - udp/53
+          propagate: true
       subject:
         - - $identity=processingunit
 identities:
   - networkrulesetpolicy
   - externalnetwork
-label: CloudAccount
+
+label: cicd-cloud-dns
