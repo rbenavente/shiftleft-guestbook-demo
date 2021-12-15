@@ -1,3 +1,5 @@
+APIVersion: 0
+data:
  externalnetworks:
     - associatedTags:
         - 'externalnetwork:name=Kube DNS'
