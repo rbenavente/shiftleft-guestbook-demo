@@ -109,8 +109,17 @@ node {
         sh 'curl -o apoctl https://download.aporeto.com/prismacloud/app/apoctl/linux/apoctl'
         sh 'chmod +x apoctl'
         withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {
+		// Rules for guestbook app
             sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -f guestbook-ruleset.yaml \
                 --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} --set ns=${env.ns}"
+		// Rules to allow DNS traffic to KubeDNS service needed to grant the proper work of the  app
+            sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group} -f group-ruleset.yaml \
+                --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group}"	
+		// Once you configured the guestbook ruleset you can set to reject the default rule for In/Out traffic for app namespace
+            sh "./apoctl api apoctl api update namespace  /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} \
+                -k “defaultPUIncomingTrafficAction=Reject” "
+            sh "./apoctl api apoctl api update namespace  /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} \
+                -k “defaultPUOutgoingTrafficAction=Reject” "
         }
     }
    stage('Generate traffic') {
