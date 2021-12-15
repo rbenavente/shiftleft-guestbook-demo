@@ -63,7 +63,8 @@ node {
    }
    
    stage('Generate traffic') {
-        sh('chmod +x ./reject-traffic-guestbook.sh && ./reject-traffic-guestbook.sh')
+        sh('chmod +x ./reject-traffic-guestbook.sh')
+	sh('./reject-traffic-guestbook.sh')
 	sh('chmod +x ./entrypoint.sh')
         sh('chmod +x ./traffic-gen.sh && ./traffic-gen.sh')
     }
