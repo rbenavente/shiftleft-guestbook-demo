@@ -52,15 +52,14 @@ node {
             sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group} -f dns-ruleset.yaml \
                 --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group}"	
 
-          // Once you configured the guestbook ruleset you can set to reject the default rule for In/Out traffic for app namespace
-	  
-            sh "./apoctl api update namespace 61ba3c9e3d30d0000168d741 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
-            sh "./apoctl api update namespace 61ba3c9e3d30d0000168d741 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
-	    }
+     }
    }
-    stage('Policy as Code: Reject not allowed traffic  Guestbook App') {
-    // Once you configured the guestbook ruleset you can set to reject the default rule for In/Out traffic for app namespace
-    sh('chmod +x ./reject-traffic-guestbook.sh && ./treject-traffic-guestbook.sh.sh')
+    stage('Policy as Code: Reject not allowed traffic  for App') {
+        // Once you configured the guestbook ruleset you can set to reject the default rule for In/Out traffic for app namespace
+	  
+        sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
+        sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
+	 
    }
    
    stage('Generate traffic') {
