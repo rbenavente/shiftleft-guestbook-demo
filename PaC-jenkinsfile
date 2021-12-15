@@ -55,11 +55,11 @@ node {
      }
    }
     stage('Policy as Code: Reject not allowed traffic  for App') {
-        // Once you configured the guestbook ruleset you can set to reject the default rule for In/Out traffic for app namespace
-	  
+        // Once you configured the guestbook ruleset you can configure the default rule to reject all In/Out traffic for app namespace
+      withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {  
         sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
         sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
-	 
+      } 
    }
    
    stage('Generate traffic') {
