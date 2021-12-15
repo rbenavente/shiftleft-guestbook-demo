@@ -1,0 +1,23 @@
+ externalnetworks:
+    - associatedTags:
+        - 'externalnetwork:name=Kube DNS'
+      entries:
+        - 10.96.0.10/32
+      name: Kube DNS
+      propagate: true
+  networkrulesetpolicies:
+    - name: 'Allow DNS demo '
+      outgoingRules:
+        - action: Allow
+          logsDisabled: false
+          object:
+            - - 'externalnetwork:name=Kube DNS'
+          observationEnabled: false
+          protocolPorts:
+            - any
+      propagate: true
+      subject:
+        - - $identity=processingunit
+identities:
+  - networkrulesetpolicy
+  - externalnetwork
