@@ -53,7 +53,7 @@ node {
             sh "./apoctl api apoctl api update namespace  /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} \
                 -k “defaultPUIncomingTrafficAction=Reject” "
             sh "./apoctl apoctl api update namespace 61b78d26ded81d0001cf8700 --namespace /807152304871829504/cto-demo-rbc/demo-build2 --data '{"defaultPUIncomingTrafficAction": "Reject",\
-                "defaultPUOutgoingTrafficAction": "Reject"
+                "defaultPUOutgoingTrafficAction": "Reject" \
                  }' "
         }
     }
