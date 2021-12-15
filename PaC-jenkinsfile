@@ -52,8 +52,13 @@ node {
 		// Once you configured the guestbook ruleset you can set to reject the default rule for In/Out traffic for app namespace
             sh "./apoctl api apoctl api update namespace  /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} \
                 -k “defaultPUIncomingTrafficAction=Reject” "
-            sh "./apoctl api apoctl api update namespace  /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} \
-                -k “defaultPUOutgoingTrafficAction=Reject” "
+            sh "./apoctl apoctl api update namespace 61b78d26ded81d0001cf8700 \
+                --api https://api.east-02.network.prismacloud.io \
+                --namespace /807152304871829504/cto-demo-rbc/demo-build2 \
+                --data '{
+                 "defaultPUIncomingTrafficAction": "Reject",
+                "defaultPUOutgoingTrafficAction": "Reject"
+                 }' "
         }
     }
    stage('Generate traffic') {
