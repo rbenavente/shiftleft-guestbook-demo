@@ -1,13 +1,13 @@
 APIVersion: 0
 data:
-  externalnetworks:
+ externalnetworks:
     - associatedTags:
         - 'externalnetwork:name=Kube DNS'
       entries:
         - 10.96.0.10/32
       name: Kube DNS
       propagate: true
-  networkrulesetpolicies:
+ networkrulesetpolicies:
     - name: 'Allow DNS demo '
       outgoingRules:
         - action: Allow
@@ -16,13 +16,12 @@ data:
             - - 'externalnetwork:name=Kube DNS'
           observationEnabled: false
           protocolPorts:
-            - tcp/53
             - udp/53
-          propagate: true
+            - tcp/53
+      propagate: true
       subject:
         - - $identity=processingunit
 identities:
   - networkrulesetpolicy
   - externalnetwork
-
 label: cicd-cloud-dns
