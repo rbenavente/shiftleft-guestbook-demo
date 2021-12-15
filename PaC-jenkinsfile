@@ -59,12 +59,12 @@ node {
       withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {  
         sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
         sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
-        } 
+        sh('chmod +x ./reject-traffic-guestbook.sh')
+	sh('./reject-traffic-guestbook.sh') } 
    }
    
    stage('Generate traffic') {
-        sh('chmod +x ./reject-traffic-guestbook.sh')
-	sh('./reject-traffic-guestbook.sh')
+
 	sh('chmod +x ./entrypoint.sh')
         sh('chmod +x ./traffic-gen.sh && ./traffic-gen.sh')
     }
