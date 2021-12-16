@@ -68,7 +68,7 @@ node {
 	// sh "PO=\$(apoctl api list namespace --recursive -f name==/\${env.tenant}/\${env.cloudAccount}/\${env.group}/\${env.ns} -c ID -o yaml | awk '{ print $3}') "
 	sh "echo app $P0"
 	sh "echo namespace /${env.tenant}/${env.cloudAccount}/${env.group}"
-        sh " echo ./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUIncomingTrafficAction=Reject' "
+        sh " echo ./apoctl api update namespace  --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUIncomingTrafficAction=Reject' "
         sh "echo ./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUOutgoingTrafficAction=Reject' "
 	
 	 
