@@ -50,8 +50,8 @@ node {
                 --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} --set ns=${env.ns}"
 	
 	    // Rules to allow DNS traffic to KubeDNS service needed to grant the proper work of the  app
-     //       sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -f dns-ruleset.yaml \
-//                --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} --set ns=${env.ns}"	
+             sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group} -f dns-ruleset.yaml \
+                --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} "	
 
      }
    }
