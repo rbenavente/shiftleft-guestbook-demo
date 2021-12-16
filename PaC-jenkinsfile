@@ -1,6 +1,7 @@
 node {
     def app
-   
+    def P0 
+    
    environment {
         guestbook = "${env.ns}"
     }
@@ -60,13 +61,14 @@ node {
         sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
         sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
         sh('chmod +x ./reject-traffic-guestbook.sh')
-	sh "PO=\$(apoctl api list namespace --recursive -f name==/\${env.tenant}/\${env.cloudAccount}/\${env.group}/\${env.ns} -c ID -o yaml | awk '{ print $3}') "
+	withEnv (["P0=${(apoctl api list namespace --recursive -f name==/\${env.tenant}/\${env.cloudAccount}/\${env.group}/\${env.ns} -c ID -o yaml | awk '{ print $3}')}"]) {
+	// sh "PO=\$(apoctl api list namespace --recursive -f name==/\${env.tenant}/\${env.cloudAccount}/\${env.group}/\${env.ns} -c ID -o yaml | awk '{ print $3}') "
 	
         sh "./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
         sh "./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
 	} 
    }
-   
+    }
    stage('Generate traffic') {
 
 	sh('chmod +x ./entrypoint.sh')
