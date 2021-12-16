@@ -1,6 +1,6 @@
 node {
     def app
-    def P0=(apoctl api list namespace --recursive -f name==/${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -c ID -o yaml | awk '{ print $3}')
+    def P0=$(apoctl api list namespace --recursive -f name==/${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -c ID -o yaml | awk '{ print $3}')
     
    environment {
         guestbook = "${env.ns}"
