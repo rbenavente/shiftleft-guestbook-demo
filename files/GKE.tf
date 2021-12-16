@@ -20,6 +20,9 @@ resource "google_container_cluster" "workload_cluster" {
       cidr_block = "0.0.0.0/0"
     }
   }
+  enable_binary_authorization = true
+  enable_intranode_visibility = true
+  enable_shielded_nodes = true
 }
 
 resource google_container_node_pool "custom_node_pool" {
