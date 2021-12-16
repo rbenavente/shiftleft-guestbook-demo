@@ -69,6 +69,7 @@ node {
 	
         sh "./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
         sh "./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
+	sh"echo $P0"
 	 
    }
     }
