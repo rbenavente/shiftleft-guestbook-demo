@@ -69,7 +69,7 @@ node {
 	sh "echo app $P0"
 	sh "echo namespace /${env.tenant}/${env.cloudAccount}/${env.group}"
         sh " echo ./apoctl api update namespace  --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUIncomingTrafficAction=Reject' "
-        sh "echo ./apoctl api update namespace '$P0' --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUOutgoingTrafficAction=Reject' "
+        sh " ./apoctl api update namespace '$P0' --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUOutgoingTrafficAction=Reject' "
 	
 	 
    }
