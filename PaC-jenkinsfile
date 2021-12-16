@@ -58,16 +58,15 @@ node {
     stage('Policy as Code: Reject not allowed traffic  for App') {
         // Once you configured the guestbook ruleset you can configure the default rule to reject all In/Out traffic for app namespace
       withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {  
-        sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
-        sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
-        sh('chmod +x ./reject-traffic-guestbook.sh')
+       // sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
+      //  sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
+      
 	P0 = sh(
         script: " ./apoctl api list namespace --recursive -f name==/${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -c ID -o yaml | awk '{ print \$3}' ",
         returnStdout: true,
          ).trim()
 	// sh "PO=\$(apoctl api list namespace --recursive -f name==/\${env.tenant}/\${env.cloudAccount}/\${env.group}/\${env.ns} -c ID -o yaml | awk '{ print $3}') "
-	sh "echo app $P0"
-	sh "echo namespace /${env.tenant}/${env.cloudAccount}/${env.group}"
+	
         sh " echo ./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUIncomingTrafficAction=Reject' "
         sh " ./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUOutgoingTrafficAction=Reject' "
 	
