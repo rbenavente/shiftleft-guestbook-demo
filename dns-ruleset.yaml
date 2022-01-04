@@ -1,4 +1,4 @@
-APIVersion: 0
+APIVersion: 1
 data:
  externalnetworks:
     - associatedTags:
