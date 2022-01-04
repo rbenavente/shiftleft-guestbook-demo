@@ -1,6 +1,12 @@
 APIVersion: 0
 data:
-  externalnetworks: []
+  externalnetworks: 
+      - associatedTags:
+        - 'externalnetwork:name=Load Balancer'
+      entries:
+        - *.demo.twistlock.com
+      name: Load Balancer
+      propagate: true
   networkrulesetpolicies:
     - incomingRules:
         - action: Allow
