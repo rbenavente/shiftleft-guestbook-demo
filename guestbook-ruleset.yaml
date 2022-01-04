@@ -4,7 +4,7 @@ data:
       - associatedTags:
         - 'externalnetwork:name=Load Balancer'
       entries:
-        - *.demo.twistlock.com
+        - '*.demo.twistlock.com'
       name: Load Balancer
       propagate: true
   networkrulesetpolicies:
