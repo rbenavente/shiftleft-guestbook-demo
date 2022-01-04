@@ -1,14 +1,6 @@
 APIVersion: 1
 data:
-  externalnetworks: 
-    type: Subnet
-    propagate: true
-    name: 'Load Balancer '
-    description: ''
-    entries:
-      - '*.demo.twistlock.com'
-    associatedTags:
-      - 'externalnetwork:name=Load Balancer '  
+  externalnetworks: []
   networkrulesetpolicies:
     - incomingRules:
         - action: Allow
