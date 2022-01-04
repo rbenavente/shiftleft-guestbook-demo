@@ -1,5 +1,6 @@
 node {
     def app
+    def P0
    
    environment {
         guestbook = "${env.ns}"
@@ -109,20 +110,34 @@ node {
         sh 'curl -o apoctl https://download.aporeto.com/prismacloud/app/apoctl/linux/apoctl'
         sh 'chmod +x apoctl'
         withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {
+	
 		// Rules for guestbook app
             sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -f guestbook-ruleset.yaml \
                 --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} --set ns=${env.ns}"
-		
-		// Rules to allow DNS traffic to KubeDNS service needed to grant the proper work of the  app
-            sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group} -f dns-ruleset.yaml \
-                --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group}"	
-		
-		// Once you configured the guestbook ruleset you can set to reject the default rule for In/Out traffic for app namespace
-            sh "./apoctl api apoctl api update namespace  /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} \
-                -k “defaultPUIncomingTrafficAction=Reject” "
-            sh "./apoctl api apoctl api update namespace  /${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} \
-                -k “defaultPUOutgoingTrafficAction=Reject” "
-        }
+	
+	    // Rules to allow DNS traffic to KubeDNS service needed to grant the proper work of the  app
+           sh "./apoctl api import -n /${env.tenant}/${env.cloudAccount}/${env.group} -f dns-ruleset.yaml \
+               --set tenant=${env.tenant} --set cloudAccount=${env.cloudAccount} --set group=${env.group} "	
+
+     }
+   }
+    stage('Policy as Code: Reject not allowed traffic  for App') {
+        // Once you configured the guestbook ruleset you can configure the default rule to reject all In/Out traffic for app namespace
+      withEnv(["APOCTL_CREDS=$WORKSPACE/default.creds"]) {  
+       // sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUIncomingTrafficAction=Reject' "
+      //  sh "./apoctl api update namespace ${env.nsID} --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k  'defaultPUOutgoingTrafficAction=Reject' "
+      
+	P0 = sh(
+        script: " ./apoctl api list namespace --recursive -f name==/${env.tenant}/${env.cloudAccount}/${env.group}/${env.ns} -c ID -o yaml | awk '{ print \$3}' ",
+        returnStdout: true,
+         ).trim()
+	// sh "PO=\$(apoctl api list namespace --recursive -f name==/\${env.tenant}/\${env.cloudAccount}/\${env.group}/\${env.ns} -c ID -o yaml | awk '{ print $3}') "
+	
+        sh " ./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUIncomingTrafficAction=Reject' "
+        sh " ./apoctl api update namespace $P0 --namespace /${env.tenant}/${env.cloudAccount}/${env.group} -k 'defaultPUOutgoingTrafficAction=Reject' "
+	
+	 
+   }
     }
    stage('Generate traffic') {
 
