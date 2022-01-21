@@ -27,5 +27,6 @@ You can find this files:
 -Ruleset and External Networks for Microsegmentation:
  --dns-ruleset.yaml
  --guestbook-ruleset.yaml
--traffic-gen.sh: generate legit and non-authorize traffic. 
+-traffic-gen.sh: generate legit and non-authorize traffic
+
 
