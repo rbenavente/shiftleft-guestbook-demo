@@ -17,13 +17,13 @@ You can find this files:
 - Jenkinsfile-deployenforcer: the script to automate the deployment of the enforcers.
 - PaC-jenkinsfile:  script to run only Policy as Code demo with microsegmentation.
 - Guestbook Manifests: 
- -- redis-follower-deployment.yaml
- -- redis-follower-service.yaml
- -- redis-leader-deployment.yaml
- -- redis-leader-service.yaml
- -- frontend-deployment.yaml
- --  frontend-service.yaml
- -- reject-traffic-guestbook.sh
+  -- redis-follower-deployment.yaml
+  -- redis-follower-service.yaml
+  -- redis-leader-deployment.yaml
+  -- redis-leader-service.yaml
+  -- frontend-deployment.yaml
+  --  frontend-service.yaml
+  -- reject-traffic-guestbook.sh
 - Ruleset and External Networks for Microsegmentation:
  --dns-ruleset.yaml
  --guestbook-ruleset.yaml
