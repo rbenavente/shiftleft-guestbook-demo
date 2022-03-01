@@ -2,7 +2,6 @@ data "google_compute_zones" "available_zones" {
   project = var.project
   region  = var.region
 }
-
 resource "google_container_cluster" "workload_cluster" {
   name               = "terragoat-${var.environment}-cluster"
   logging_service    = "none"
@@ -21,7 +20,6 @@ resource "google_container_cluster" "workload_cluster" {
     }
   }
 }
-
 resource google_container_node_pool "custom_node_pool" {
   cluster  = google_container_cluster.workload_cluster.name
   location = var.region
